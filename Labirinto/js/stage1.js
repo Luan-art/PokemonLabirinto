@@ -1,5 +1,20 @@
 var stage1State = {
     create: function(){
+        this.onGame = true;
+       
+		this.music = game.add.audio('VioletCity');
+		this.music.loop = true;
+		this.music.volume = .5;
+		this.music.play();
+
+
+        this.raryCandySound = game.add.audio('getitem');
+        this.raryCandySound.volume = .5;
+
+        this.combatSound = game.add.audio('BattleOpen');
+        this.combatSound.volume = .5;
+
+
         game.add.sprite(0,0,'grama');
 
         this.maze = [
@@ -58,37 +73,101 @@ var stage1State = {
             }
         }
 
-
-  
+        //criar inimigo
+        this.inimigo = game.add.sprite(75,75, 'rattata');
+        this.inimigo.anchor.set(.5);
+        game.physics.arcade.enable(this.inimigo);
+        this.inimigo.animations.add('goDown', [0,1,2,3], 12, true );
+        this.inimigo.animations.add('goUp', [12,13,14,15], 12, true);
+        this.inimigo.animations.add('goRight', [8,9,10,11], 12, true);
+        this.inimigo.animations.add('goLeft', [4,5,6,7], 12, true);
+        this.inimigo.direction = 'DOWN';
 
         //criarRaryCandy
         this.raryCandy = {};
         this.raryCandy.position = this.newPosition();
-        this.raryCandy = game.add.sprite(this.raryCandy.position.x, this.raryCandy.position.y, 'thunderStone');
+        this.raryCandy = game.add.sprite(this.raryCandy.position.x, this.raryCandy.position.y, 'candy');
         this.raryCandy.anchor.set(.5);
         game.physics.arcade.enable(this.raryCandy);
 
         //coletar candys
         this.niveis = 0;
-        this.textRaryCandys = game.add.text(15,15,'Nivel: ' +this.niveis, {font:'15px emulogic', fill:'#fff'});
+        this.evolutions = 0;
+        this.textRaryCandys = game.add.text(15,15,'Nivel: ' +this.getText(this.niveis), {font:'15px emulogic', fill:'#fff'});
 
 
         //controles
 		this.controls = game.input.keyboard.createCursorKeys();
 
+        //timer
+        this.time = 0;
+		this.txtTimer = game.add.text(game.world.width - 15,15,'TIME: ' + this.getText(this.time),{font:'15px emulogic',fill:'#fff'});
+		this.txtTimer.anchor.set(1,0);
+		this.timer = game.time.events.loop(1000,function(){
+			this.time++;
+			this.txtTimer.text = 'TIME: ' + this.getText(this.time);
+		},this);
+
     },
 
     update: function(){
-		game.physics.arcade.collide(this.player,this.blocks);
-        game.physics.arcade.overlap(this.player, this.raryCandy, this.getRaryCandy, null, this);
-        game.physics.arcade.overlap(this.player, this.stone, this.getStone, this.requerimentoNivel, this);
+        if(this.onGame){
+            game.physics.arcade.collide(this.player,this.blocks);
+            game.physics.arcade.overlap(this.player, this.raryCandy, this.getRaryCandy, null, this);
+            game.physics.arcade.overlap(this.player, this.stone, this.getStone, this.requerimentoNivel, this);
+            game.physics.arcade.overlap(this.player, this.inimigo, this.encostouInimigo, null, this);
 
 
-		this.movePlayer();
+		    this.movePlayer();
+            this.moveInimigo();
+        }
+		
 
 	},
 
+    encostouInimigo: function(){
+        this.combatSound.play();
+        this.gameOver();
+    },
+
+    gameOver:function(){
+        this.onGame = false;
+
+        game.time.events.remove(this.timer);
+
+        this.player.body.velocity.x = 0;
+		this.player.body.velocity.y = 0;
+		this.player.animations.stop();
+		this.player.frame = 0;
+
+        this.enemy.animations.stop();
+		this.enemy.frame = 0;
+
+ 
+		if(this.evolutions === 1){//Passou de fase
+			
+		} else {//Acabou o tempo
+			var txtGameOver = game.add.text(game.world.centerX,150,'GAME OVER',{font:'20px emulogic',fill:'#fff'});
+				txtGameOver.anchor.set(.5);
+		}
+		
+		var txtBestScore = game.add.text(game.world.centerX,350,'BEST SCORE: ' + this.getText(this.time),{font:'20px emulogic',fill:'#fff'});
+			txtBestScore.anchor.set(.5);
+			
+		game.time.events.add(5000,function(){
+			this.music.stop();
+			if(this.evolutions === 1){
+				
+			} else {
+				game.state.start('menu');
+			}
+		},this);
+    },
+	
+
     getStone: function(){
+        this.raryCandySound.play();
+        this.evolutions++;
 
         this.player.loadTexture('Vaporeon');
         this.stone.visible = false;
@@ -109,11 +188,13 @@ var stage1State = {
 
     getRaryCandy: function(){
 
+        this.raryCandySound.play();
+
         this.niveis++;
-        this.textRaryCandys.text = 'Nivel: ' + this.niveis;
+        this.textRaryCandys.text = 'Nivel: ' + this.getText(this.niveis);
 
         this.raryCandy.position = this.newPosition();
-        if(this.niveis >= 5){
+        if(this.niveis >= 5 && this.evolutions < 1){
             this.stone.visible = true;
         }
     },
@@ -163,6 +244,49 @@ var stage1State = {
         }
 	},
 
+    moveInimigo: function(){
+		if(Math.floor(this.inimigo.x -25)%50 === 0 && Math.floor(this.inimigo.y -25)%50 === 0){
+			var inimigoCol = Math.floor(this.inimigo.x/50);
+			var inimigoRow = Math.floor(this.inimigo.y/50);
+			var validPath = [];
+			
+			if(this.maze[inimigoRow][inimigoCol-1] !== 1 && this.inimigo.direction !== 'RIGHT'){
+				validPath.push('LEFT');
+			}
+			if(this.maze[inimigoRow][inimigoCol+1] !== 1 && this.inimigo.direction !== 'LEFT'){
+				validPath.push('RIGHT');
+			}
+			if(this.maze[inimigoRow-1][inimigoCol] !== 1 && this.inimigo.direction !== 'DOWN'){
+				validPath.push('UP');
+			}
+			if(this.maze[inimigoRow+1][inimigoCol] !== 1 && this.inimigo.direction !== 'UP'){
+				validPath.push('DOWN');
+			}
+			
+			this.inimigo.direction = validPath[Math.floor(Math.random()*validPath.length)];
+		}
+		
+		switch(this.inimigo.direction){
+			case 'LEFT':
+				this.inimigo.x -= 1;
+				this.inimigo.animations.play('goLeft');
+				break;
+			case 'RIGHT':
+				this.inimigo.x += 1;
+				this.inimigo.animations.play('goRight');
+				break;
+			case 'UP':
+				this.inimigo.y -= 1;
+				this.inimigo.animations.play('goUp');
+				break;
+			case 'DOWN':
+				this.inimigo.y += 1;
+				this.inimigo.animations.play('goDown');
+				break;
+			
+		}
+	},
+
     newPosition: function(){
         var pos = this.raryCandyPosition[Math.floor(Math.random()* this.raryCandyPosition.length)];
     
@@ -171,7 +295,18 @@ var stage1State = {
 
         }
         return pos;
-    }
+    },
+
+    	
+	getText: function(value){
+		if(value < 10){
+			return '00' + value.toString();
+		}
+		if(value < 100){
+			return '0' + value.toString();
+		}
+		return value.toString();
+	}
 
 
 };

@@ -13,10 +13,11 @@ var loadState = {
         game.load.image('thunderStone', 'img/thunderStone.png');
         game.load.image('gameOver', 'img/gameOver.png');
 		game.load.image('grama', 'img/grama.png');
-
-
+		game.load.image('candy', 'img/candy.png');
+		game.load.image('Button', 'img/Button.png');
 
 		game.load.spritesheet('Eevee','  img/Eevee.png',64,64);
+		game.load.spritesheet('rattata','  img/rattata.png',64,64);
         game.load.spritesheet('Jolteon','img/Jolteon.png',64,64);
         game.load.spritesheet('Flarion','img/Flarion.png',64,64);
 		game.load.spritesheet('Vaporeon','img/Vaporeon.png',64,64);
@@ -25,8 +26,11 @@ var loadState = {
 
 		
 		game.load.audio('CeladonSound','sfx/CeladonSound.ogg');
-		game.load.audio('Evolution','sfx/Evolution.ogg');
-		game.load.audio('Violet City','sfx/Violet City.ogg');
+		game.load.audio('EvolutionSuccess','sfx/EvolutionSuccess.ogg');
+		game.load.audio('VioletCity','sfx/VioletCity.ogg');
+		game.load.audio('getitem','sfx/getitem.ogg');
+		game.load.audio('BattleOpen','sfx/BattleOpen.WAV');
+
 	},
 
 	create: function(){

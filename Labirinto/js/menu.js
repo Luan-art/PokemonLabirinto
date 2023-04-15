@@ -4,19 +4,21 @@ var menuState = {
 		this.music.loop = true;
 		this.music.volume = .5;
 		this.music.play();
-	
+
 		var txtLabirinto = game.add.text(game.world.centerX,150,'LABIRINTO',{font:'40px emulogic',fill:'#fff'});
 			txtLabirinto.anchor.set(.5);
 			
-		var txtPressStart = game.add.text(game.world.centerX,550,'PRESS START',{font:'20px emulogic',fill:'#fff'});
-			txtPressStart.anchor.set(.5);
+		//var txtPressStart = game.add.text(game.world.centerX,550,'PRESS START',{font:'20px emulogic',fill:'#fff'});
+		//	txtPressStart.anchor.set(.5);
 			
-		game.add.tween(txtPressStart).to({y:250},1000).start();
-		
-		game.time.events.add(1000,function(){
-			var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-				enterKey.onDown.addOnce(this.startGame,this);
-		},this);
+		//game.add.tween(txtPressStart).to({y:250},1000).start();
+
+		// Adiciona um botão ao jogo
+		var button = game.add.sprite(game.world.centerX, game.world.centerY, 'Button');
+			button.anchor.set(0.5);
+			button.inputEnabled = true;
+			button.events.onInputDown.add(this.startGame, this);
+
 	},
 	
 	startGame: function(){
