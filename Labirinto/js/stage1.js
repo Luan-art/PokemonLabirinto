@@ -17,19 +17,7 @@ var stage1State = {
 
         game.add.sprite(0,0,'grama');
 
-        this.maze = [
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-			[1,0,0,3,0,0,0,3,0,0,0,0,0,3,1],
-			[1,0,1,1,0,1,0,1,1,1,0,1,1,0,1],
-			[1,0,1,1,0,1,1,0,0,1,0,1,1,0,1],
-			[1,0,0,0,1,1,1,1,0,1,0,1,1,0,1],
-			[1,3,0,0,0,1,0,2,0,3,0,0,3,0,1],
-			[1,0,1,0,0,0,0,0,1,0,0,1,1,0,1],
-			[1,0,1,1,1,1,0,1,1,0,1,1,1,0,1],
-			[1,0,0,0,3,0,0,0,1,0,0,0,0,4,1],
-			[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-        ];
-
+        this.maze = this.createMaze();
         this.raryCandyPosition = [];
         this.blocks= game.add.group();
         this.blocks.enableBody = true;
@@ -93,6 +81,7 @@ var stage1State = {
         //coletar candys
         this.niveis = 0;
         this.evolutions = 0;
+        this.touchInimigo = 0;
         this.textRaryCandys = game.add.text(15,15,'Nivel: ' +this.getText(this.niveis), {font:'15px emulogic', fill:'#fff'});
 
 
@@ -110,6 +99,90 @@ var stage1State = {
 
     },
 
+    
+    createMaze: function(){
+
+        const num = Math.floor(Math.random() * 5) + 1;
+        
+        switch(num) {
+            case 1:
+
+              return  [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,0,3,0,0,0,3,0,0,0,0,0,3,1],
+                [1,0,1,1,0,1,0,1,1,1,0,1,1,0,1],
+                [1,0,1,1,0,1,1,0,0,1,0,1,1,0,1],
+                [1,0,0,0,1,1,1,1,0,1,0,1,1,0,1],
+                [1,3,0,0,0,1,0,2,0,3,0,0,3,0,1],
+                [1,0,1,0,0,0,0,0,1,0,0,1,1,0,1],
+                [1,0,1,1,1,1,0,1,1,0,1,1,1,0,1],
+                [1,0,0,0,3,0,0,0,1,0,0,0,0,4,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+            
+            case 2:
+              return  [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,3,1,0,0,0,0,0,1,0,0,0,0,4,1],
+                [1,0,1,0,0,0,0,0,1,3,0,1,1,1,1],
+                [1,0,1,1,1,1,0,3,0,0,0,1,0,0,1],
+                [1,3,0,0,0,0,0,0,0,0,0,1,0,0,1],
+                [1,0,0,0,1,0,0,2,0,0,0,1,0,0,1],
+                [1,0,1,0,0,0,0,0,0,0,3,0,0,0,1],
+                [1,0,1,1,1,0,0,0,1,1,1,1,1,0,1],
+                [1,3,0,0,0,3,0,0,0,3,0,0,0,0,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+            
+            case 3:
+              return  [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,3,0,3,0,0,1,0,0,3,0,0,3,1],
+                [1,1,1,0,0,0,0,1,1,1,1,0,0,0,1],
+                [1,0,1,0,3,0,0,1,0,0,1,0,0,0,1],
+                [1,0,0,0,0,0,0,0,0,0,0,3,0,0,1],
+                [1,1,1,1,0,0,0,2,0,0,0,0,0,0,1],
+                [1,0,0,1,0,0,0,0,0,1,1,1,0,0,1],
+                [1,0,0,1,0,0,0,1,1,1,0,0,0,3,1],
+                [1,4,0,0,3,3,0,0,0,1,0,0,3,0,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+            
+            case 4:
+              return [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,0,0,3,0,0,3,0,0,0,1,0,0,1],
+                [1,0,3,0,0,0,0,0,0,0,0,1,0,0,1],
+                [1,1,1,0,0,0,0,0,1,1,1,1,3,0,1],
+                [1,3,0,0,0,1,0,0,0,0,0,0,0,0,1],
+                [1,0,0,0,0,1,0,2,4,0,0,3,0,0,1],
+                [1,0,0,1,1,1,1,1,1,0,0,0,0,0,1],
+                [1,3,0,1,0,0,3,0,0,0,1,1,1,1,1],
+                [1,0,0,1,0,0,0,0,0,0,3,0,0,0,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+            
+            case 5:
+              return  [
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,4,0,0,1,3,0,0,1,0,3,0,0,1],
+                [1,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
+                [1,3,1,0,0,1,1,0,0,1,0,0,1,0,1],
+                [1,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
+                [1,0,1,0,0,3,0,2,0,3,0,0,1,0,1],
+                [1,0,1,0,0,1,0,0,1,1,1,0,1,0,1],
+                [1,0,0,0,0,1,0,0,0,0,1,0,1,0,1],
+                [1,0,0,3,0,1,0,0,3,0,1,3,0,0,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ];
+            
+            default:
+              return null;
+          }
+        },
+       
+
+
     update: function(){
         if(this.onGame){
             game.physics.arcade.collide(this.player,this.blocks);
@@ -120,6 +193,10 @@ var stage1State = {
 
 		    this.movePlayer();
             this.moveInimigo();
+
+            if(this.touchInimigo > 0){
+				this.gameOver();
+			}
         }
 		
 
@@ -127,11 +204,14 @@ var stage1State = {
 
     encostouInimigo: function(){
         this.combatSound.play();
-        this.gameOver();
-    },
+        this.touchInimigo++;
+
+     },
+
 
     gameOver:function(){
         this.onGame = false;
+        this.music.stop();
 
         game.time.events.remove(this.timer);
 
@@ -140,23 +220,23 @@ var stage1State = {
 		this.player.animations.stop();
 		this.player.frame = 0;
 
-        this.enemy.animations.stop();
-		this.enemy.frame = 0;
+        this.inimigo.animations.stop();
+		this.inimigo.frame = 0;
 
  
-		if(this.evolutions === 1){//Passou de fase
+		if(this.evolutions > 0){//Passou de fase
 			
-		} else {//Acabou o tempo
+		} else { 
 			var txtGameOver = game.add.text(game.world.centerX,150,'GAME OVER',{font:'20px emulogic',fill:'#fff'});
 				txtGameOver.anchor.set(.5);
 		}
 		
-		var txtBestScore = game.add.text(game.world.centerX,350,'BEST SCORE: ' + this.getText(this.time),{font:'20px emulogic',fill:'#fff'});
+		var txtBestScore = game.add.text(game.world.centerX,350,'Tempo de Jogo: ' + this.getText(this.time),{font:'20px emulogic',fill:'#fff'});
 			txtBestScore.anchor.set(.5);
 			
 		game.time.events.add(5000,function(){
-			this.music.stop();
-			if(this.evolutions === 1){
+						
+            if(this.evolutions === 1){
 				
 			} else {
 				game.state.start('menu');
