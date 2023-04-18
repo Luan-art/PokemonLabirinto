@@ -18,6 +18,8 @@ var loadState = {
 
 		game.load.spritesheet('Eevee','  img/Eevee.png',64,64);
 		game.load.spritesheet('rattata','  img/rattata.png',64,64);
+		game.load.spritesheet('Raticate','  img/Raticate.png',64,64);
+		game.load.spritesheet('Persian','  img/Persian.png',64,64);
         game.load.spritesheet('Jolteon','img/Jolteon.png',64,64);
         game.load.spritesheet('Flarion','img/Flarion.png',64,64);
 		game.load.spritesheet('Vaporeon','img/Vaporeon.png',64,64);

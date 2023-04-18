@@ -5,6 +5,7 @@ var game = new Phaser.Game(750,500,Phaser.CANVAS);
 	game.state.add('menu',menuState);
 	game.state.add('stage1',stage1State);
 	game.state.add('stage2',stage2State);
+	game.state.add('stage3',stage3State);
 	game.state.add('end',endState);
 	
 	game.state.start('boot');

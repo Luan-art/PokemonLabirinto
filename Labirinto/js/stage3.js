@@ -1,4 +1,4 @@
-var stage1State = {
+var stage3State = {
     create: function(){
         this.onGame = true;
        
@@ -52,7 +52,7 @@ var stage1State = {
                 }else if(tile === 4){
                         //criar Stone
                                         
-                        this.stone = game.add.sprite(x, y, 'waterStone');
+                        this.stone = game.add.sprite(x, y, 'thunderStone');
                         this.stone.anchor.set(.5);
                         game.physics.arcade.enable(this.stone);
                         this.stone.visible = false; // torna o sprite visível quando o nível for maior ou igual a 10
@@ -62,7 +62,7 @@ var stage1State = {
         }
 
         //criar inimigo
-        this.inimigo = game.add.sprite(75,75, 'rattata');
+        this.inimigo = game.add.sprite(75,75, 'Persian');
         this.inimigo.anchor.set(.5);
         game.physics.arcade.enable(this.inimigo);
         this.inimigo.animations.add('goDown', [0,1,2,3], 12, true );
@@ -240,7 +240,7 @@ var stage1State = {
 		game.time.events.add(3000,function(){
 						
             if(this.evolutions > 0){
-                game.state.start('stage2');
+                game.state.start('end');
 				
 			} else {
 				game.state.start('end');
@@ -253,7 +253,7 @@ var stage1State = {
         this.raryCandySound.play();
         this.evolutions++;
 
-        this.player.loadTexture('Vaporeon');
+        this.player.loadTexture('Jolteon');
         this.stone.visible = false;
 
     },
@@ -262,7 +262,7 @@ var stage1State = {
     requerimentoNivel: function(){
         var nivelRequerido = false;
 
-        if(this.niveis >= 5){
+        if(this.niveis >= 10){
             nivelRequerido = true;
         }
 
@@ -278,7 +278,7 @@ var stage1State = {
         this.textRaryCandys.text = 'Nivel: ' + this.getText(this.niveis);
 
         this.raryCandy.position = this.newPosition();
-        if(this.niveis >= 5 && this.evolutions < 1){
+        if(this.niveis >= 10 && this.evolutions < 1){
             this.stone.visible = true;
         }
     },
@@ -394,3 +394,4 @@ var stage1State = {
 
 
 };
+
