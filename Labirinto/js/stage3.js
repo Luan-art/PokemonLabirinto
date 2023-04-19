@@ -239,12 +239,8 @@ var stage3State = {
 			
 		game.time.events.add(3000,function(){
 						
-            if(this.evolutions > 0){
                 game.state.start('end');
-				
-			} else {
-				game.state.start('end');
-			}
+							
 		},this);
     },
 	
@@ -255,6 +251,8 @@ var stage3State = {
 
         this.player.loadTexture('Jolteon');
         this.stone.visible = false;
+        this.stone.destroy();
+
 
     },
 

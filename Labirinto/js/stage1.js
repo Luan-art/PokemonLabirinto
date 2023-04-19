@@ -255,6 +255,7 @@ var stage1State = {
 
         this.player.loadTexture('Vaporeon');
         this.stone.visible = false;
+        this.stone.destroy();
 
     },
 

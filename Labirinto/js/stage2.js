@@ -255,7 +255,7 @@ var stage2State = {
 
         this.player.loadTexture('Flarion');
         this.stone.visible = false;
-
+        this.stone.destroy();
     },
 
 
