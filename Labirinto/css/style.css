@@ -31,11 +31,7 @@
   }
   
 
-  @media (max-width: 1200px) {
-	.container {
-	  padding: 0 5px;
-	}
-  }
+
   
   @font-face {
 	font-family: emulogic;
